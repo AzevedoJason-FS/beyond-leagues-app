@@ -1,29 +1,81 @@
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import Public from "./component/Public";
-import Login from "./features/auth/Login";
-import DashLayout from "./components/DashLayout";
-import Welcome from "./features/auth/Welcome";
-import FantasyPlayers from "./features/fantasy-players/FantasyPlayers";
-import UsersList from "./features/users/UsersList";
+import { React, Suspense, lazy } from "react";
+
+const LandingPage = lazy(() => import("./components/LandingPage"));
+const Login = lazy(() => import("./features/auth/Login"));
+const Dashboard = lazy(() => import("./features/auth/Dashboard"));
+const MyBets = lazy(() => import("./features/MyBets"));
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Public />} />
-        <Route path="login" element={<Login />} />
-        <Route path="dash" element={<DashLayout />}>
-          <Route index element={<Welcome />} />
-          <Route path="fantasy-players">
-            <Route index element={<FantasyPlayers />} />
-          </Route>
-          <Route path="users">
-            <Route index element={<UsersList />} />
-          </Route>
-        </Route>{/* End Dash */}
-      </Route>
-    </Routes>
+    <div className="app">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Suspense
+              fallback={
+                <div className="loader-container">
+                  <div className="loader-container-inner">
+                    <h2>Loading..</h2>
+                  </div>
+                </div>
+              }
+            >
+              <LandingPage />
+            </Suspense>
+          }
+        />
+                <Route
+          path="/bets"
+          element={
+            <Suspense
+              fallback={
+                <div className="loader-container">
+                  <div className="loader-container-inner">
+                    <h2>Loading..</h2>
+                  </div>
+                </div>
+              }
+            >
+              <MyBets />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Suspense
+              fallback={
+                <div className="loader-container">
+                  <div className="loader-container-inner">
+                  <h2>Loading..</h2>
+                  </div>
+                </div>
+              }
+            >
+              <Login />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/dash"
+          element={
+            <Suspense
+              fallback={
+                <div className="loader-container">
+                  <div className="loader-container-inner">
+                  <h2>Loading..</h2>
+                  </div>
+                </div>
+              }
+            >
+              <Dashboard />
+            </Suspense>
+          }
+        />
+      </Routes>
+    </div>
   );
 };
 
